@@ -4,7 +4,11 @@
   "author": "Geoffry Song <gsong@benbria.ca>",
   "description": "RabbitMQ firehose display",
   "dependencies": {
+    "coffee-script": "~1.7.1",
     "amqplib": "~0.1.2",
     "express": "~3.4.8"
+  },
+  "scripts": {
+    "start": "node_modules/.bin/coffee index.coffee"
   }
 }
