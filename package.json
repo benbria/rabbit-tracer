@@ -1,0 +1,10 @@
+{
+  "name": "rabbit-tracer",
+  "version": "0.1.0",
+  "author": "Geoffry Song <gsong@benbria.ca>",
+  "description": "RabbitMQ firehose display",
+  "dependencies": {
+    "amqplib": "~0.1.2",
+    "express": "~3.4.8"
+  }
+}

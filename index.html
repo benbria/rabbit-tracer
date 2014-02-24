@@ -1,0 +1,84 @@
+<!doctype html>
+<title>RabbitMQ Firehose</title>
+<style type="text/css">
+div {
+    margin: 1em;
+    border: 1px solid grey;
+    padding: 0.2em;
+    animation: slide-in 0.2s;
+    position: relative;
+}
+.exchange, .routing-keys {
+    display: inline-block;
+    margin-right: 0.5em;
+    border: 1px solid lightgrey;
+    padding: 0.2em;
+    border-radius: 0.3em;
+    background-color: lightgrey;
+}
+.exchange::before {
+    content: "Exchange: "
+}
+.routing-keys::before {
+    content: "Routing key: "
+}
+.content {
+    margin: 0;
+    margin-top: 0.5em;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 6em;
+    overflow: hidden;
+    line-height: 1.6em;
+}
+div:hover::after {
+    display: block;
+    content: "Click to expand";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0.4;
+}
+div.active::after {
+    display: none;
+}
+div.active .content {
+    max-height: none;
+}
+@keyframes slide-in {
+    from {
+        transform: translate(-100%, 0);
+        opacity: 0.5;
+    }
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+</style>
+<script type="text/javascript" src="socket.io/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<main>
+</main>
+<script type="text/javascript">
+var socket = io.connect(window.location.protocol + '//' + window.location.host);
+var $main = $('main');
+socket.on('message', function(msg) {
+    var content = msg.content;
+    try {
+        var s = JSON.parse(content);
+        content = JSON.stringify(s, null, '  ');
+    } catch (err) {
+    }
+    $('<div>')
+        .append($('<span class="exchange">').text(msg.exchange_name))
+        .append($('<span class="routing-keys">').text(msg.routing_keys.join(', ')))
+        .append($('<pre class="content">').text(content))
+        .prependTo($main)
+});
+$main.on('click', 'div', function(e) {
+    $('.active').removeClass('active');
+    $(this).addClass('active');
+});
+</script>
